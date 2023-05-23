@@ -6,6 +6,7 @@ class AppBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HomeScreenController());
-    Get.lazyPut(() => MeteoScreenController());
+    Get.put(MeteoScreenController());
+    // Get.lazyPut(() => MeteoScreenController());
   }
 }

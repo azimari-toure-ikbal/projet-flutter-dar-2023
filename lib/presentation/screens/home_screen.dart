@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:projet_flutter_dar_2023/presentation/controllers/meteo_screen_controller.dart';
 import 'package:projet_flutter_dar_2023/presentation/widgets/home_screen_text.dart';
 
@@ -18,16 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final HomeScreenController controller = Get.find();
-    final MeteoScreenController meteoController = Get.find();
-
-    bool hasVisited = controller.hasvisitedPage;
-
-    // Navigue vers la page de redirection si la page a déjà été visitée
-    if (hasVisited) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offNamed(AppRoutes.meteo);
-      });
-    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -35,7 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: Image.asset("assets/img/background_img.png"),
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+              Colors.indigo.shade900,
+              Colors.indigo.shade500,
+              Colors.blue,
+              Colors.lightBlueAccent,
+              Colors.blue.shade100
+            ], begin: Alignment.topRight, end: Alignment.bottomLeft)),
+          ),
         ),
         Container(
           padding: const EdgeInsets.only(top: 100),
@@ -59,37 +59,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [HomeScreenText("IN A NEW WAY")],
               ),
+              Lottie.asset(
+                "assets/lottie/weather.json",
+              )
             ],
           ),
-        )
-      ]),
-      bottomNavigationBar: Container(
-        // color: Colors.red,
-        width: MediaQuery.of(context).size.width,
-        height: 75,
-        padding: const EdgeInsets.only(right: 50),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const Text(
-              "Start",
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(width: 4),
-            GestureDetector(
-              onTap: () {
-                controller.markVisited();
-                meteoController.getMeteoPourVilles();
-                Get.offNamedUntil(AppRoutes.meteo, (route) => false);
-                // Get.toNamed(AppRoutes.meteo);
-              },
-              child: const Icon(CupertinoIcons.arrow_right),
-            )
-          ],
         ),
-      ),
+        Positioned(
+          bottom: 30,
+          right: 20,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text(
+                "Start",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(width: 4),
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.meteo);
+                },
+                child: const Icon(CupertinoIcons.arrow_right),
+              )
+            ],
+          ),
+        ),
+      ]),
     );
   }
 }
